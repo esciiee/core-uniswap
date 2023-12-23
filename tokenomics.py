@@ -45,8 +45,8 @@ def calc_amount1(liq, pa, pb):
         pa, pb = pb, pa
     return int(liq * (pb - pa) / q96)
 
-amount0 = calc_amount0(liq, sqrtp_upp, sqrtp_cur)
-amount1 = calc_amount1(liq, sqrtp_low, sqrtp_cur)
+amount0 = calc_amount0(liq0, price_to_sqrtp_q64_96(price_high), price_to_sqrtp_q64_96(price_current))
+amount1 = calc_amount1(liq1, price_to_sqrtp_q64_96(price_low), price_to_sqrtp_q64_96(price_current))
 
 
 
