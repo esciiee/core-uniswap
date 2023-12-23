@@ -37,13 +37,13 @@ liquidity = min(liq0, liq1)
 def calc_amount0(liq, pa, pb):
     if pa > pb:
         pa, pb = pb, pa
-    return int(liq * q96 * (pb - pa) / pa / pb)
+    return int(liq * q64_96 * (pb - pa) / pa / pb)
 
 
 def calc_amount1(liq, pa, pb):
     if pa > pb:
         pa, pb = pb, pa
-    return int(liq * (pb - pa) / q96)
+    return int(liq * (pb - pa) / q64_96)
 
 amount0 = calc_amount0(liq0, price_to_sqrtp_q64_96(price_high), price_to_sqrtp_q64_96(price_current))
 amount1 = calc_amount1(liq1, price_to_sqrtp_q64_96(price_low), price_to_sqrtp_q64_96(price_current))
