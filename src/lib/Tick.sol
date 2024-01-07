@@ -1,23 +1,18 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
 pragma solidity ^0.8.14;
+import "./TickMath.sol";
 
 library Tick {
-    struct Info {
-        bool initialized;
-        uint128 liquidity;
-    }
+    function tickSpacingToMaximumLiquidty(
+        int24 tickSpacing
+    ) internal pure returns (uint128) {
+        //convert min and max tick to multiple of tick spacing
+        int24 minTick = (TickMath.MIN_TICK / tickSpacing) * tickSpacing;
+        int24 maxTick = (TickMath.MAX_TICK / tickSpacing) * tickSpacing;
 
-    function update(
-        mapping(int24 => Tick.Info) storage self,
-        int24 tick,
-        uint128 liquidityDelta
-    ) internal {
-        Tick.Info storage tickInfo = self[tick];
-        uint128 liquidityBefore = tickInfo.liquidity;
-        uint128 liquidityAfter = liquidityBefore + liquidityDelta;
-        if (liquidityBefore == 0) {
-            tickInfo.initialized = true;
-        }
-        tickInfo.liquidity = liquidityAfter;
+        //calculating number of ticks b/w max and min
+        uint24 numOfTicks = uint24((maxTick - minTick) / tickSpacing) + 1;
+        /// @dev: note that the max value of liq is 2^128 - 1;
+        return type(uint128).max / numOfTicks;
     }
 }
